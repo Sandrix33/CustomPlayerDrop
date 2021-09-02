@@ -1,8 +1,0 @@
-name: CustomPlayerDrop
-main: CustomPlayerDrop.Sandrix.Dev.Main
-author: Sandrix33
-version: 0.1
-description: Plugin for custom player drop
-commands:
-  CustomPlayerDrop:
-    description: Commands for reload config 
