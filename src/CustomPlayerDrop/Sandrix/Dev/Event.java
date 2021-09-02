@@ -1,6 +1,7 @@
 package CustomPlayerDrop.Sandrix.Dev;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -122,6 +123,7 @@ public class Event implements Listener{
 			item.setDurability((short)3);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwner(p.getName());
+		List<String> lore = Config.HeadLore;
 		if(k==null) {
 			meta.setDisplayName(Config.HeadName.replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", "CONSOLE"));
 
@@ -134,16 +136,16 @@ public class Event implements Listener{
 			
 			
 			if(k==null) {
-				Config.HeadLore.set(i, Config.HeadLore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}","CONSOLE"));
+				lore.set(i, lore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}","CONSOLE"));
 
 			}
 			else {
-				Config.HeadLore.set(i, Config.HeadLore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
+				lore.set(i, lore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
 
 			}			
 		}
 		
-		meta.setLore(Config.HeadLore);
+		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
 		
