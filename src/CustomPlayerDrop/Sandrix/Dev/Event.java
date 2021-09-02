@@ -44,7 +44,7 @@ public class Event implements Listener{
 									e.setDroppedExp(Config.XpGiveCount);
 								}
 								if(Config.MoneyOnKill) {
-									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "money give "+e.getEntity().getKiller().getName()+" "+Config.MoneyGiveCount);
+									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give "+k.getName()+" "+Config.MoneyGiveCount);
 								}
 							}else {
 								return;
@@ -83,7 +83,7 @@ public class Event implements Listener{
 								e.setDroppedExp(Config.XpGiveCount);
 							}
 							if(Config.MoneyOnKill) {
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "money give "+e.getEntity().getKiller().getName()+" "+Config.MoneyGiveCount);
+								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give "+k.getName()+" "+Config.MoneyGiveCount);
 							}
 						}else {
 							return;

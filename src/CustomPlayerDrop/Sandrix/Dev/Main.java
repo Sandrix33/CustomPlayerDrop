@@ -15,6 +15,5 @@ public class Main extends JavaPlugin{
 		Bukkit.getServer().getPluginManager().registerEvents(new Event(), this);
 		getCommand("CustomPlayerDrop").setExecutor(new Reload());
 		
-		
 	}
 }

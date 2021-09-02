@@ -4,7 +4,7 @@
 #User: "CustomPlayerDrop.enabled"
 #Admin: "CustomPlayerDrop.admin"
 
-Version: 1.1
+Version: 1.2
 
 #[ITA]-Abilita CustomPlayerDrop
 #[ENG]-Enable CustomPlayerDrop
@@ -65,8 +65,8 @@ XpOnKill: false
 
 XpGiveCount: 100
 
-#[ITA]-Imposta il guadagno di soldi - ATTENZIONE per questa feature si necessita di essentials!
-#[ENG]-Set money earning - ATTENTION for this feature you need essentials!
+#[ITA]-Imposta il guadagno di soldi - ATTENZIONE per questa feature si necessita di essentials e di PlayerKillonly su true!
+#[ENG]-Set money earning - ATTENTION for this feature you need essentials and PlayerKillonly to true!
 
 MoneyOnKill: false
 
