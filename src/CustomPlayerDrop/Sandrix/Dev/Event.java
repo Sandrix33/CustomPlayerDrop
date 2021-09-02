@@ -1,7 +1,7 @@
 package CustomPlayerDrop.Sandrix.Dev;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -123,30 +123,24 @@ public class Event implements Listener{
 			item.setDurability((short)3);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwner(p.getName());
-		List<String> lore = Config.HeadLore;
+		ArrayList<String> lore = new ArrayList<String>();
 		if(k==null) {
 			meta.setDisplayName(Config.HeadName.replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", "CONSOLE"));
-
 		}
 		else {
 			meta.setDisplayName(Config.HeadName.replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
-
 		}		
-		for(int i=0; i<Config.HeadLore.size(); i++) {
-			
-			
+		for(int i=0; i< Config.HeadLore.size(); i++) {
 			if(k==null) {
-				lore.set(i, lore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}","CONSOLE"));
+				lore.add(Config.HeadLore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}","CONSOLE"));
 
 			}
 			else {
-				lore.set(i, lore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
-
+				lore.add(Config.HeadLore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
 			}			
 		}
 		
 		meta.setLore(lore);
-		
 		item.setItemMeta(meta);
 		
 		int v = (int) (Math.random() * 101);
