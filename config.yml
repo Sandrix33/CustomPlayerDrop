@@ -1,9 +1,10 @@
 #Creator: Sandrix33
 #Twitch channel: https://www.twitch.tv/sandrix33
-#Config version: 0.1
 #Permission: 
 #User: "CustomPlayerDrop.enabled"
 #Admin: "CustomPlayerDrop.admin"
+
+Version: 1.1
 
 #[ITA]-Abilita CustomPlayerDrop
 #[ENG]-Enable CustomPlayerDrop
@@ -14,7 +15,6 @@ CustomPlayerDrop: true
 #[ENG]-Missing permission message
 
 permissionMessage: "&cYou are not allowed"
-
 
 #[ITA]-Imposta CustomPlayerDrop solo quando un giocatore ne uccide un altro
 #[ENG]-Set CustomPlayerDrop only when one player kills another
@@ -29,11 +29,71 @@ DropPlayerInventory: true
 #[ITA]-Imposta se la testa del giocatore deve essere data
 #[ENG]-Set whether the player's head is to be given
 
-DropPlayerHead: false
+DropPlayerHead: true
+
+#[ITA]-Imposta il nome e la descrizione della testa {player} = nome giocatore
+#[ENG]-Set head name and lore {player} = Player's name
+
+HeadName: "&6{player}'s head"
+HeadLore: 
+    - "&6{player}'s head lore"
+    - "{player}'s head lore 2"
+    - "&cKilled By {killer}"
+
+#[ITA]-Imposta il rateo di drop della testa - è impostato in %
+#[ENG]-Set the head drop rate - it is set in %
+
+HeadDropRate: 100
+
+#[ITA]-Specifica in quale mondo
+#[ENG]-Specify in which world
+
+SpecificWorldOnly: false
+
+#[ITA]-Lista dei mondi
+#[ENG]-Worlds list
+
+Worlds:
+    - "world"
+    - "world_nether"
+
+
+#[ITA]-Imposta il Drop di esperienza 
+#[ENG]-Set the experience drop
+
+XpOnKill: false
+
+XpGiveCount: 100
+
+#[ITA]-Imposta il guadagno di soldi - ATTENZIONE per questa feature si necessita di essentials!
+#[ENG]-Set money earning - ATTENTION for this feature you need essentials!
+
+MoneyOnKill: false
+
+MoneyGiveCount: 100
 
 #[ITA]-Imposta drop aggiuntivi
 #[ENG]-Set additional drops
-#[Format] - {Material Block}, {count}
+
+EnableExtraDrop: true		
+
+#[ITA]-Nota! in questa sezione utilizza § al posto di & 
+#[ENG]-Note! in this section use § instead of &
 
 ExtraDrop:
-  - STONE, 20
+  20: #Drop Rate as Name
+    ==: org.bukkit.inventory.ItemStack
+    type: STONE
+    amount: 1
+    meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: §6Sample Item
+        lore:
+        - First line of lore
+        - Second line of lore
+        - §1Color §2support
+        enchants:
+          DAMAGE_ALL: 2
+          KNOCKBACK: 7
+          FIRE_ASPECT: 1

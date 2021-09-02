@@ -3,6 +3,7 @@ package CustomPlayerDrop.Sandrix.Dev;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,50 +20,98 @@ public class Event implements Listener{
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity().getPlayer();
+		Player k = e.getEntity().getKiller();
 		Location l = p.getLocation();
 		
 		if(Config.plenabled) {
 			
 			if(p.hasPermission("CustomPlayerDrop.enabled")) {
-				
-				if(Config.PlayerKillonly) {
-					if(e.getEntity().getKiller() instanceof Player) {
+				if(Config.SpecificWorldOnly) {
+					
+					if(Config.worlds.contains(p.getWorld().getName())) {
+						if(Config.PlayerKillonly) {
+							if(k instanceof Player) {
+								if(!Config.DropPlayerInventory) {
+									e.getDrops().clear();
+								}
+								if(Config.DropPlayerHead) {
+									DropPlayerHead(p, l, k);
+								}
+								if(Config.EnableExtraDrop) {
+									DropExtraDrop(p, l);
+								}
+								if(Config.XpOnKill) {
+									e.setDroppedExp(Config.XpGiveCount);
+								}
+								if(Config.MoneyOnKill) {
+									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "money give "+e.getEntity().getKiller().getName()+" "+Config.MoneyGiveCount);
+								}
+							}else {
+								return;
+							}
+							
+						}
+						else {
+							if(!Config.DropPlayerInventory) {
+								e.getDrops().clear();
+							}
+							if(Config.DropPlayerHead) {
+								DropPlayerHead(p, l, k);
+							}
+							if(Config.EnableExtraDrop) {
+								DropExtraDrop(p, l);
+							}
+							if(Config.XpOnKill) {
+								e.setDroppedExp(Config.XpGiveCount);
+							}
+						}
+					}
+					
+				}else {
+					if(Config.PlayerKillonly) {
+						if(k instanceof Player) {
+							if(!Config.DropPlayerInventory) {
+								e.getDrops().clear();
+							}
+							if(Config.DropPlayerHead) {
+								DropPlayerHead(p, l, k);
+							}
+							if(Config.EnableExtraDrop) {
+								DropExtraDrop(p, l);
+							}
+							if(Config.XpOnKill) {
+								e.setDroppedExp(Config.XpGiveCount);
+							}
+							if(Config.MoneyOnKill) {
+								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "money give "+e.getEntity().getKiller().getName()+" "+Config.MoneyGiveCount);
+							}
+						}else {
+							return;
+						}
+						
+					}
+					else {
 						if(!Config.DropPlayerInventory) {
 							e.getDrops().clear();
 						}
 						if(Config.DropPlayerHead) {
-							DropPlayerHead(p, l);
+							DropPlayerHead(p, l, k);
 						}
-						DropExtraDrop(p, l);
-						
-						
-						
-					}else {
-						return;
+						if(Config.EnableExtraDrop) {
+							DropExtraDrop(p, l);
+						}
+						if(Config.XpOnKill) {
+							e.setDroppedExp(Config.XpGiveCount);
+						}
 					}
-					
 				}
-				else {
-					if(!Config.DropPlayerInventory) {
-						e.getDrops().clear();
-					}
-					if(Config.DropPlayerHead) {
-						DropPlayerHead(p, l);
-					}
-					DropExtraDrop(p, l);
-					
-					
-					
-				}
-
-				
 			}
 			
 		}
 		
 	}
 	
-	public void DropPlayerHead(Player p, Location l){
+	public void DropPlayerHead(Player p, Location l, Player k){
 		
 		boolean NewVersion = Arrays.stream(Material.values()).map(Material::name).collect(Collectors.toList()).contains("PLAYER_HEAD");
 		
@@ -73,20 +122,46 @@ public class Event implements Listener{
 			item.setDurability((short)3);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwner(p.getName());
+		if(k==null) {
+			meta.setDisplayName(Config.HeadName.replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", "CONSOLE"));
+
+		}
+		else {
+			meta.setDisplayName(Config.HeadName.replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
+
+		}		
+		for(int i=0; i<Config.HeadLore.size(); i++) {
+			
+			
+			if(k==null) {
+				Config.HeadLore.set(i, Config.HeadLore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}","CONSOLE"));
+
+			}
+			else {
+				Config.HeadLore.set(i, Config.HeadLore.get(i).replaceAll("&", "§").replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
+
+			}			
+		}
+		
+		meta.setLore(Config.HeadLore);
 		
 		item.setItemMeta(meta);
 		
-		p.getWorld().dropItemNaturally(l, item);
+		int v = (int) (Math.random() * 101);
+		
+		if(v<=Config.HeadDropRate)
+			p.getWorld().dropItemNaturally(l, item);
 		
 	}
 	
 	public void DropExtraDrop(Player p, Location l) {
-
-		for(int i=0; i<Config.items.size();i++) {	
-			
-			ItemStack item = new ItemStack(Material.valueOf(Config.items.get(i).getMat()), Config.items.get(i).getCount());
-			
-			p.getWorld().dropItemNaturally(l, item);
+		
+		int v = (int) (Math.random() * 101);
+		
+		
+		for(int i=0; i<Config.items.size();i++) {
+			if(v<=Config.rates.get(i))
+				p.getWorld().dropItemNaturally(l, Config.items.get(i));
 		}
 	
 	}
