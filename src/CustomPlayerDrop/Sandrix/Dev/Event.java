@@ -32,66 +32,20 @@ public class Event implements Listener{
 					if(Config.worlds.contains(p.getWorld().getName())) {
 						if(Config.PlayerKillonly) {
 							if(k instanceof Player) {
-								if(!Config.DropPlayerInventory) {
-									e.getDrops().clear();
-								}
-								if(Config.DropPlayerHead) {
-									DropPlayerHead(p, l, k);
-								}
-								if(Config.EnableExtraDrop) {
-									DropExtraDrop(p, l);
-								}
-								if(Config.XpOnKill) {
-									e.setDroppedExp(Config.XpGiveCount);
-								}
 								if(Config.MoneyOnKill) {
 									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give "+k.getName()+" "+Config.MoneyGiveCount);
 								}
 							}else {
 								return;
 							}
-							
 						}
-						else {
-							if(!Config.DropPlayerInventory) {
-								e.getDrops().clear();
-							}
-							if(Config.DropPlayerHead) {
-								DropPlayerHead(p, l, k);
-							}
-							if(Config.EnableExtraDrop) {
-								DropExtraDrop(p, l);
-							}
-							if(Config.XpOnKill) {
-								e.setDroppedExp(Config.XpGiveCount);
-							}
+						if(Config.EnableExtraCommands) {
+							for(int i = 0; i<Config.commands.size();i++) {
+								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Config.commands.get(i).replaceAll("\\{player}", p.getName()));
+								if(k!=null) {
+									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Config.commands.get(i).replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
+								}							}
 						}
-					}
-					
-				}else {
-					if(Config.PlayerKillonly) {
-						if(k instanceof Player) {
-							if(!Config.DropPlayerInventory) {
-								e.getDrops().clear();
-							}
-							if(Config.DropPlayerHead) {
-								DropPlayerHead(p, l, k);
-							}
-							if(Config.EnableExtraDrop) {
-								DropExtraDrop(p, l);
-							}
-							if(Config.XpOnKill) {
-								e.setDroppedExp(Config.XpGiveCount);
-							}
-							if(Config.MoneyOnKill) {
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give "+k.getName()+" "+Config.MoneyGiveCount);
-							}
-						}else {
-							return;
-						}
-						
-					}
-					else {
 						if(!Config.DropPlayerInventory) {
 							e.getDrops().clear();
 						}
@@ -105,6 +59,40 @@ public class Event implements Listener{
 							e.setDroppedExp(Config.XpGiveCount);
 						}
 					}
+					else {
+						return;
+					}
+				}else {
+					if(Config.PlayerKillonly) {
+						if(k instanceof Player) {
+							if(Config.MoneyOnKill) {
+								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give "+k.getName()+" "+Config.MoneyGiveCount);
+							}
+						}else {
+							return;
+						}	
+					}
+					if(Config.EnableExtraCommands) {
+						for(int i = 0; i<Config.commands.size();i++) {
+							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Config.commands.get(i).replaceAll("\\{player}", p.getName()));
+							if(k!=null) {
+								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Config.commands.get(i).replaceAll("\\{player}", p.getName()).replaceAll("\\{killer}", k.getName()));
+							}
+						}
+					}
+					if(!Config.DropPlayerInventory) {
+						e.getDrops().clear();
+					}
+					if(Config.DropPlayerHead) {
+						DropPlayerHead(p, l, k);
+					}
+					if(Config.EnableExtraDrop) {
+						DropExtraDrop(p, l);
+					}
+					if(Config.XpOnKill) {
+						e.setDroppedExp(Config.XpGiveCount);
+					}
+				
 				}
 			}
 			
@@ -152,10 +140,8 @@ public class Event implements Listener{
 	
 	public void DropExtraDrop(Player p, Location l) {
 		
-		int v = (int) (Math.random() * 101);
-		
-		
 		for(int i=0; i<Config.items.size();i++) {
+			int v = (int) (Math.random() * 101);
 			if(v<=Config.rates.get(i))
 				p.getWorld().dropItemNaturally(l, Config.items.get(i));
 		}

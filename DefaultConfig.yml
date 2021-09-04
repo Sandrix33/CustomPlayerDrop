@@ -1,3 +1,7 @@
+#THIS IS AN EXAMPLE CONFIG IS USED TO REMEMBER COMMENTS 
+#AND OTHER EXAMPLES THIS FILE IS UNUSED FROM PLUGIN
+#IF YOU REMOVE IT, IT RECREATES AUTOMATICALLY
+
 #Creator: Sandrix33
 #Twitch channel: https://www.twitch.tv/sandrix33
 #Permission: 
@@ -5,7 +9,7 @@
 #Admin: "CustomPlayerDrop.admin"
 
 #Important not remove or change!
-Version: 1.4
+Version: 1.4 
 
 #[ITA]-Abilita CustomPlayerDrop
 #[ENG]-Enable CustomPlayerDrop
@@ -80,7 +84,7 @@ EnableExtraCommands: false
 ExtraCommands:
     - "eco take {player} 100"
     - "eco give {killer} 20"
-    
+
 #[ITA]-Imposta drop aggiuntivi
 #[ENG]-Set additional drops
 
