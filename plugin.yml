@@ -1,7 +1,7 @@
 name: CustomPlayerDrop
 main: CustomPlayerDrop.Sandrix.Dev.Main
 author: Sandrix33
-version: 1.4
+version: 1.5
 description: Plugin for custom player drop
 commands:
   CustomPlayerDrop:

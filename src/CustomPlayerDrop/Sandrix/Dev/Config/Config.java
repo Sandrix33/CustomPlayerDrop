@@ -1,17 +1,12 @@
 package CustomPlayerDrop.Sandrix.Dev.Config;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-
 import CustomPlayerDrop.Sandrix.Dev.Main;
-
 public class Config {
-
 	public static YamlConfiguration config;
 	public static File dir = new File("plugins/CustomPlayerDrop");
 	public static File configFile = new File("plugins/CustomPlayerDrop/config.yml");
@@ -31,11 +26,11 @@ public class Config {
 	public static int MoneyGiveCount;
 	public static boolean EnableExtraDrop;
 	public static boolean EnableExtraCommands;
+	public static String NonPlayerKiller;
 	public static List<String> worlds = new ArrayList<String>();
 	public static List<String> commands = new ArrayList<String>();
 	public static ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 	public static ArrayList<Integer> rates = new ArrayList<Integer>();
-	
 	public static void SaveConfig() {
 		try {
 			config.save(configFile);
@@ -44,25 +39,18 @@ public class Config {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void CheckConfig() {
-		
 		if(!dir.exists()) {
-			
-			dir.mkdir();
-			
+			dir.mkdir();	
 		}
-		
 		Main.getPlugin(Main.class).saveResource("DefaultConfig.yml", true);
-
 		if(!configFile.exists()) {
 			Main.getPlugin(Main.class).saveResource("config.yml", true);
-			
-
-		}else {
+		}
+		else {
 			config = YamlConfiguration.loadConfiguration(configFile);
-			if(config.getDouble("Version") != 1.4) {
-				config.set("Version", 1.4);
+			if(config.getDouble("Version") != 1.5) {
+				config.set("Version", 1.5);
 				SaveConfig();
 			}
 			if(config.get("CustomPlayerDrop") == null) {
@@ -77,6 +65,10 @@ public class Config {
 				config.set("PlayerKillonly", false);
 				SaveConfig();
 			}
+			if(config.get("NonPlayerKiller") == null) {
+				config.set("NonPlayerKiller", "Something");
+				SaveConfig();
+			}
 			if(config.get("DropPlayerInventory") == null) {
 				config.set("DropPlayerInventory", true);
 				SaveConfig();
@@ -86,14 +78,18 @@ public class Config {
 				SaveConfig();
 			}
 			if(config.get("HeadName") == null) {
-				config.set("HeadName", "&6{player}'s head");
+				config.set("HeadName", "&e{player}'s head");
 				SaveConfig();
 			}
 			if(config.get("HeadLore") == null) {
 				List<String> list = new ArrayList<String>();
-				list.add("&6{player}'s head lore");
-				list.add("{player}'s head lore 2");
-				list.add("&cKilled By {killer}");
+				list.add("");
+				list.add("&b&lCustom Player Drop");
+				list.add("");
+				list.add("&fYou can drop enemies heads");
+				list.add("&fby killing them.");
+				list.add("");
+				list.add("&cKilled by &4&l{killer}");
 				config.set("HeadLore", list);
 				SaveConfig();
 			}
@@ -134,8 +130,8 @@ public class Config {
 			}
 			if(config.get("ExtraCommands") == null) {
 				List<String> list = new ArrayList<String>();
-				list.add("eco take {player} 100");
-				list.add("eco give {killer} 20");
+				list.add("effect give {killer} jump_boost 10 5");
+				list.add("tell {killer} &a&lYou have been rewarded with &b&nJump Boost V");
 				config.set("ExtraCommands", list);
 				SaveConfig();
 			}
@@ -145,30 +141,26 @@ public class Config {
 			}
 			if(config.get("ExtraDrop") == null) {
 				config.set("ExtraDrop.20.==", "org.bukkit.inventory.ItemStack");
-				config.set("ExtraDrop.20.type", "STONE");
+				config.set("ExtraDrop.20.type", "GHAST_TEAR");
 				config.set("ExtraDrop.20.amount", 1);
 				config.set("ExtraDrop.20.meta.==",  "ItemMeta");
 				config.set("ExtraDrop.20.meta.meta-type",  "UNSPECIFIC");
-				config.set("ExtraDrop.20.meta.display-name",  "§6Sample Item");
+				config.set("ExtraDrop.20.meta.display-name",  "&5&lSoul §dfragment");
 				List<String> list = new ArrayList<String>();
-				list.add("First line of lore");
-				list.add("Second line of lore");
-				list.add("§1Color §2support");
+				list.add("");
+				list.add("&b§lCustom Player Drop");
+				list.add("");
+				list.add("§fA piece of a §dplayer's soul");
+				list.add("§c§nbe careful! §fit may break.");
+				list.add("");
 				config.set("ExtraDrop.20.meta.lore",  list);
-				config.set("ExtraDrop.20.meta.enchants.DAMAGE_ALL",  2);
-				config.set("ExtraDrop.20.meta.enchants.KNOCKBACK",  7);
-				config.set("ExtraDrop.20.meta.enchants.FIRE_ASPECT",  1);
-
-
+				config.set("ExtraDrop.20.meta.enchants.KNOCKBACK",  1);
+				config.set("ExtraDrop.20.meta.Unbreakable",  true);
 				SaveConfig();
 			}
-
 		}
-		
 		config = YamlConfiguration.loadConfiguration(configFile);
-	
 	}
-	
 	public static void Reload() {
 		System.out.print("[CustomPlayerDrop] Reloading config...");
 		items.clear();
@@ -176,21 +168,16 @@ public class Config {
 		loadConfig();
 		System.out.print("[CustomPlayerDrop] Config reloaded!!!");
 	}
-	
-
-	
 	public static void loadConfig() {
-		
 		System.out.print("[CustomPlayerDrop] Loading config...");
 		plenabled = config.getBoolean("CustomPlayerDrop");
-		
 		if(plenabled == false) {
 			System.out.print("[CustomPlayerDrop] Plugin set to false!");
 			return;
 		}
-		
 		permMessage = config.getString("permissionMessage").replaceAll("&", "§");
 		PlayerKillonly = config.getBoolean("PlayerKillonly");
+		NonPlayerKiller = config.getString("NonPlayerKiller");
 		DropPlayerInventory = config.getBoolean("DropPlayerInventory");
 		DropPlayerHead = config.getBoolean("DropPlayerHead");
 		if(DropPlayerHead) {
@@ -218,8 +205,6 @@ public class Config {
 				  rates.add(Integer.valueOf(s));
 			}
 		System.out.print("[CustomPlayerDrop] Loading Complete!!");
-		
 		return;
-		
 	}
 }
